@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulário Validação</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { max-width: 400px; margin: 0 auto; }
+    label { display: block; margin-top: 15px; }
+    input { width: 100%; padding: 8px; box-sizing: border-box; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; cursor: pointer; }
+    .error { color: red; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Formulário de Contato</h1>
+  <form id="meuFormulario" novalidate>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required />
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" required />
+
+    <label for="telefone">Telefone:</label>
+    <input type="text" id="telefone" name="telefone" placeholder="(##)#-####-####" maxlength="11" required />
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <div id="mensagensErro" class="error"></div>
+
+  <script>
+    const form = document.getElementById("meuFormulario");
+    const mensagensErro = document.getElementById("mensagensErro");
+
+    form.addEventListener("submit", function(event) {
+      mensagensErro.innerHTML = "";
+      let erros = [];
+
+      const nome = form.nome.value.trim();
+      const email = form.email.value.trim();
+      const telefone = form.telefone.value.trim();
+
+      if (nome.length < 5 || nome.length > 40) {
+        erros.push("O campo nome deve ter entre 5 e 40 caracteres.");
+      }
+
+      if (!email.includes("@")) {
+        erros.push("O campo e-mail deve conter '@'.");
+      }
+
+      if (!/^d{11}$/.test(telefone)) {
+        erros.push("O campo telefone deve ter exatamente 11 dígitos numéricos.");
+      }
+
+      if (!nome || !email || !telefone) {
+        erros.push("Todos os campos são obrigatórios.");
+      }
+
+      if (erros.length > 0) {
+        event.preventDefault();
+        mensagensErro.innerHTML = erros.join("<br>");
+      }
+    });
+  </script>
+
+</body>
+</html>
